@@ -750,5 +750,5 @@ temp/
 
 # End of https://www.gitignore.io/api/node,csharp,aspnetcore,visualstudio,visualstudiocode
 
-/frontend/node_modules
-/frontend/dist
+/frontend-spa/node_modules
+/frontend-spa/dist

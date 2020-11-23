@@ -8,6 +8,7 @@ export default () => {
     home();
 }
 
+const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
 
 function header() {
@@ -40,5 +41,22 @@ function socialClick() {
     const socialElement = document.querySelector('.social');
     socialElement.addEventListener('click', function() {
         appElement.innerHTML = FriendsList();
+        idButton();
     })
+}
+
+function idButton() {
+    const idButtonElement = document.querySelector('.steam-id-button');
+    idButtonElement.addEventListener('click', function() {
+        const steamID = document.querySelector('.steam-id-input').value;
+        console.log(steamID);
+        getFriendsList(steamID);
+    })
+}
+
+function getFriendsList(steamID) {
+    fetch(`http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=${steamAPIKey}&steamid=${steamID}&relationship=friend`)
+    .then(response => response.json())
+    .then(results => console.log(results.friendslist.friends[0]))
+    .catch(err => console.log(err))
 }

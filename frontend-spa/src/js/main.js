@@ -2,6 +2,7 @@ import Header from './components/Header';
 import Home from './components/Home'
 import FriendsList from './components/FriendsList';
 import GameShuffler from './components/GameShuffler';
+import GamesOwned from './components/GamesOwned';
 
 export default () => {
     header();
@@ -34,6 +35,7 @@ function soloClick() {
     const soloElement = document.querySelector('.solo');
     soloElement.addEventListener('click', function(){
         appElement.innerHTML = GameShuffler();
+        idButton();
     })
 }
 
@@ -50,7 +52,7 @@ function idButton() {
     idButtonElement.addEventListener('click', function() {
         const steamID = document.querySelector('.steam-id-input').value;
         console.log(steamID);
-        getFriendsList(steamID);
+        getGamesOwned(steamID);
     })
 }
 
@@ -60,3 +62,14 @@ function getFriendsList(steamID) {
     .then(results => console.log(results.friendslist.friends[0]))
     .catch(err => console.log(err))
 }
+
+function getGamesOwned(steamID) {
+    fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${steamID}&format=json`)
+    .then(response => response.json())
+    .then(results => {
+        console.log(results.response.games)
+        appElement.innerHTML = GamesOwned(results.response.games)
+    })
+    .catch(err => console.log(err))
+}
+

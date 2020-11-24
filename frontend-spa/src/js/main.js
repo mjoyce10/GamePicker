@@ -68,7 +68,8 @@ function getGamesOwned(steamID) {
     .then(response => response.json())
     .then(results => {
         console.log(results.response.games)
-        appElement.innerHTML = GamesOwned(results.response.games)
+        fetch(`http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=${steamAPIKey}&appid=${game.appid}`)
+        appElement.innerHTML = GamesOwned(results.response.games, steamAPIKey)
     })
     .catch(err => console.log(err))
 }

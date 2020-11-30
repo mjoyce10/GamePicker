@@ -69,11 +69,13 @@ function getGamesOwned(steamID) {
     .then(results => {
         console.log(results.response.games)
         console.log(results.response.games[63].appid)
-        fetch(`http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=${steamAPIKey}&appid=${results.response.games[63].appid}`)
+        for(let i = 0; i < results.response.games.length; i++) {
+        fetch(`http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=${steamAPIKey}&appid=${results.response.games[i].appid}`)
         .then(response => response.json())
         .then(result => console.log(result.game.gameName))
         .catch(err => console.log(err))
         // appElement.innerHTML = GamesOwned(results.response.games, steamAPIKey)
+    }
     })
     .catch(err => console.log(err))
 }

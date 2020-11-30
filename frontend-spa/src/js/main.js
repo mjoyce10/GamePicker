@@ -77,7 +77,7 @@ function getGamesOwned(steamID) {
             const gameName = result.game.gameName;
             console.log(gameName)
             const gameDiv = document.querySelector('.games')
-            if (gameName !== undefined && gameName.substring(0,5) !== "Valve") {
+            if (gameName !== undefined && gameName.substring(0,9) !== "ValveTest") {
             let gameNameElement = document.createElement("P")
             gameNameElement.setAttribute("id", i)
             console.log(gameNameElement)

@@ -3,6 +3,7 @@ import Home from './components/Home'
 import FriendsList from './components/FriendsList';
 import GameShuffler from './components/GameShuffler';
 import GamesOwned from './components/GamesOwned';
+import ShuffleResult from './components/ShuffleResult';
 
 export default () => {
     header();
@@ -68,8 +69,9 @@ function getGamesOwned(steamID) {
     .then(response => response.json())
     .then(results => {
         console.log(results.response.games)
-        console.log(results.response.games[63].appid)
         appElement.innerHTML = GamesOwned()
+        shuffleButton()
+        var gamePossibilities = []
         for(let i = 0; i < results.response.games.length; i++) {
         fetch(`http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=${steamAPIKey}&appid=${results.response.games[i].appid}`)
         .then(response => response.json())
@@ -83,12 +85,25 @@ function getGamesOwned(steamID) {
             console.log(gameNameElement)
             gameNameElement.innerHTML = gameName;
             gameDiv.appendChild(gameNameElement)
+            gamePossibilities.push(gameNameElement)
         }
         })
         .catch(err => console.log(err))
-        // appElement.innerHTML = GamesOwned(results.response.games, steamAPIKey)
     }
     })
     .catch(err => console.log(err))
 }
 
+function shuffleGames(gamePossibilities){
+    const shuffleResultElement = document.querySelector('.game-choice')
+    shuffleResultElement.innerText = `${gamePossibilities[Math.floor(Math.random()* gamePossibilities.length) +1]}`
+}
+
+function shuffleButton() {
+    const shuffleButtonElement = document.querySelector('.shuffle-btn')
+    shuffleButtonElement.addEventListener("click", function(){
+        console.log("shuffleButton")
+    appElement.innerHTML = ShuffleResult()
+    shuffleGames(gamePossibilities)
+    })
+}

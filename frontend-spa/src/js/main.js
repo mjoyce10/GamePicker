@@ -12,6 +12,7 @@ export default () => {
 
 const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
+var gamePossibilities = [];
 
 function header() {
     const headerElement = document.querySelector('.header');
@@ -71,7 +72,6 @@ function getGamesOwned(steamID) {
         console.log(results.response.games)
         appElement.innerHTML = GamesOwned()
         shuffleButton()
-        var gamePossibilities = []
         for(let i = 0; i < results.response.games.length; i++) {
         fetch(`http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=${steamAPIKey}&appid=${results.response.games[i].appid}`)
         .then(response => response.json())
@@ -79,13 +79,13 @@ function getGamesOwned(steamID) {
             const gameName = result.game.gameName;
             console.log(gameName)
             const gameDiv = document.querySelector('.games')
-            if (gameName !== undefined && gameName.substring(0,9) !== "ValveTest") {
+            if (gameName !== undefined && gameName.substring(0,9) !== "ValveTest" && gameName !== "") {
             let gameNameElement = document.createElement("P")
             gameNameElement.setAttribute("id", i)
             console.log(gameNameElement)
             gameNameElement.innerHTML = gameName;
             gameDiv.appendChild(gameNameElement)
-            gamePossibilities.push(gameNameElement)
+            gamePossibilities.push(gameName)
         }
         })
         .catch(err => console.log(err))
@@ -94,16 +94,18 @@ function getGamesOwned(steamID) {
     .catch(err => console.log(err))
 }
 
-function shuffleGames(gamePossibilities){
+function shuffleGames(){
     const shuffleResultElement = document.querySelector('.game-choice')
-    shuffleResultElement.innerText = `${gamePossibilities[Math.floor(Math.random()* gamePossibilities.length) +1]}`
+    shuffleResultElement.innerText = `${gamePossibilities[Math.floor(Math.random()* gamePossibilities.length)]}`
 }
 
 function shuffleButton() {
     const shuffleButtonElement = document.querySelector('.shuffle-btn')
     shuffleButtonElement.addEventListener("click", function(){
         console.log("shuffleButton")
+        console.log(gamePossibilities)
     appElement.innerHTML = ShuffleResult()
-    shuffleGames(gamePossibilities)
+    shuffleGames()
+    shuffleButton()
     })
 }

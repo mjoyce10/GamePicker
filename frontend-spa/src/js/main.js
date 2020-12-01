@@ -1,71 +1,74 @@
 import Header from './components/Header';
-import Home from './components/Home'
-import FriendsList from './components/FriendsList';
+import EnterSteamID from './components/EnterSteamID'
 import FriendsListResults from './components/FriendsListResults';
-import GameShuffler from './components/GameShuffler';
 import GamesOwned from './components/GamesOwned';
 import ShuffleResult from './components/ShuffleResult';
+import SoloOrSocial from './components/SoloOrSocial';
 
 export default () => {
     header();
-    home();
+    enterSteamID();
 }
 
 const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
 var gamePossibilities = [];
 var friendsListArray = [];
-const defaultGameImage = "../../images/default.jpg"
+const defaultGameImage = "../../images/default.jpg";
+let mainUserSteamID = "";
 
 function header() {
     const headerElement = document.querySelector('.header');
     headerElement.innerHTML = Header();
-    homeNav();
+    navHome();
 }
 
-function home() {
-    appElement.innerHTML = Home();
-    soloClick();
+function enterSteamID() {
+    appElement.innerHTML = EnterSteamID();
+    saveSteamID();
+}
+
+function reenterSteamID() {
+    const reenterElement = document.querySelector('.re-enter');
+    reenterElement.addEventListener('click', function(){
+        enterSteamID();
+    })
+}
+
+function soloOrSocial() {
+    appElement.innerHTML = SoloOrSocial()
     socialClick();
+    soloClick();
+    reenterSteamID();
 }
 
-function homeNav() {
-    const homeNavElement = document.querySelector('.nav-home');
-    homeNavElement.addEventListener('click', function(){
-        home();
+function navHome(){
+    const navHomeElement = document.querySelector('.nav-home')
+    navHomeElement.addEventListener('click', function() {
+        soloOrSocial();
+    })
+}
+
+function saveSteamID() {
+    const saveIDButton = document.querySelector('.steam-id-button')
+    saveIDButton.addEventListener('click', function() {
+        mainUserSteamID = document.querySelector('.steam-id-input').value;
+        console.log(mainUserSteamID)
+        soloOrSocial();
     })
 }
 
 function soloClick() {
     const soloElement = document.querySelector('.solo');
     soloElement.addEventListener('click', function(){
-        appElement.innerHTML = GameShuffler();
-        idButton();
+        getGamesOwned(mainUserSteamID);
     })
 }
 
 function socialClick() {
     const socialElement = document.querySelector('.social');
     socialElement.addEventListener('click', function() {
-        appElement.innerHTML = FriendsList();
-        socialIdButton();
-    })
-}
-
-function idButton() {
-    const idButtonElement = document.querySelector('.steam-id-button');
-    idButtonElement.addEventListener('click', function() {
-        const steamID = document.querySelector('.steam-id-input').value;
-        console.log(steamID);
-        getGamesOwned(steamID);
-    })
-}
-
-function socialIdButton() {
-    const socialIdButtonElement = document.querySelector('.steam-id-button-social')
-    socialIdButtonElement.addEventListener('click', function() {
-        const socialSteamId = document.querySelector('.steam-id-input-social').value;
-        getFriendsList(socialSteamId)
+        getFriendsList(mainUserSteamID);    
     })
 }
 
@@ -73,13 +76,11 @@ function getFriendsList(steamID) {
     fetch(`http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=${steamAPIKey}&steamid=${steamID}&relationship=friend`)
     .then(response => response.json())
     .then(results => {
+        friendsListArray.length = 0;
         console.log(results.friendslist.friends[0].steamid)
         appElement.innerHTML = FriendsListResults()
         results.friendslist.friends.forEach(element => {
-            // const friendsListElement = document.createElement("P")
             const friendsSteamId = element.steamid
-            // friendsListElement.innerHTML = friendsSteamId
-            // friendsDiv.appendChild(friendsListElement)
             friendsListArray.push(friendsSteamId)
         })
         getFriendsListNames();

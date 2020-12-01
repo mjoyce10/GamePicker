@@ -79,6 +79,12 @@ function getGamesOwned(steamID) {
             console.log(gameNameElement)
             gameNameElement.innerHTML = gameName;
             gameDiv.appendChild(gameNameElement)
+
+            const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${element.appid}/${element.img_logo_url}.jpg`
+            const gameImageElement = document.createElement("IMG");
+            console.log(gameImageElement)
+            gameImageElement.setAttribute("src", imgURL)
+            gameDiv.appendChild(gameImageElement)
         });
         gamePossibilities = results.response.games;
         shuffleButton()

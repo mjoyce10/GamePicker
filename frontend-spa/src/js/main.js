@@ -15,6 +15,7 @@ const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
 var gamePossibilities = [];
 var friendsListArray = [];
+const defaultGameImage = "../../images/default.jpg"
 
 function header() {
     const headerElement = document.querySelector('.header');
@@ -119,16 +120,18 @@ function getGamesOwned(steamID) {
         results.response.games.forEach(element => {
             console.log(element.name)
             const gameName = element.name;
+            if(!gameName.includes("Public Test")) {
             const gameNameElement = document.createElement("P");
             console.log(gameNameElement)
             gameNameElement.innerHTML = gameName;
             gameDiv.appendChild(gameNameElement)
-
-            const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${element.appid}/${element.img_logo_url}.jpg`
+            const gameLogo = element.img_logo_url;
+            const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${element.appid}/${gameLogo}.jpg`
             const gameImageElement = document.createElement("IMG");
             console.log(gameImageElement)
-            gameImageElement.setAttribute("src", imgURL)
+            setDefaultImage(gameImageElement, imgURL, gameLogo)
             gameDiv.appendChild(gameImageElement)
+        }
         });
         gamePossibilities = results.response.games;
         shuffleButton()
@@ -141,8 +144,9 @@ function shuffleGames(){
     let arrayPosition = Math.floor(Math.random()* gamePossibilities.length);
     shuffleResultElement.innerText = `${gamePossibilities[arrayPosition].name}`
     const gameImage = document.querySelector('.game-choice-image')
-    const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${gamePossibilities[arrayPosition].appid}/${gamePossibilities[arrayPosition].img_logo_url}.jpg`
-    gameImage.setAttribute("src", imgURL)
+    const gameLogo = gamePossibilities[arrayPosition].img_logo_url
+    const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${gamePossibilities[arrayPosition].appid}/${gameLogo}.jpg`
+    setDefaultImage(gameImage, imgURL, gameLogo)
 }
 
 function shuffleButton() {
@@ -154,4 +158,13 @@ function shuffleButton() {
     shuffleGames()
     shuffleButton()
     })
+}
+
+function setDefaultImage(gameImage, imgURL, gameLogo) {
+    if (gameLogo !== "") {
+        gameImage.setAttribute("src", imgURL)
+    }
+    else {
+        gameImage.setAttribute("src", defaultGameImage)
+    }
 }

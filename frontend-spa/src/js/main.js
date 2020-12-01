@@ -101,6 +101,9 @@ function getFriendsListNames() {
             const friendsSteamName = element.personaname
             friendsListElement.innerHTML = friendsSteamName
             friendsDiv.appendChild(friendsListElement)
+            const friendsAvatarElement = document.createElement("IMG")
+            friendsAvatarElement.setAttribute("src", element.avatarmedium)
+            friendsDiv.appendChild(friendsAvatarElement)
         })
     })
     .catch(err => console.log(err))

@@ -88,7 +88,11 @@ function getGamesOwned(steamID) {
 
 function shuffleGames(){
     const shuffleResultElement = document.querySelector('.game-choice')
-    shuffleResultElement.innerText = `${gamePossibilities[Math.floor(Math.random()* gamePossibilities.length)].name}`
+    let arrayPosition = Math.floor(Math.random()* gamePossibilities.length);
+    shuffleResultElement.innerText = `${gamePossibilities[arrayPosition].name}`
+    const gameImage = document.querySelector('.game-choice-image')
+    const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${gamePossibilities[arrayPosition].appid}/${gamePossibilities[arrayPosition].img_logo_url}.jpg`
+    gameImage.setAttribute("src", imgURL)
 }
 
 function shuffleButton() {

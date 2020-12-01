@@ -1,6 +1,7 @@
 import Header from './components/Header';
 import Home from './components/Home'
 import FriendsList from './components/FriendsList';
+import FriendsListResults from './components/FriendsListResults';
 import GameShuffler from './components/GameShuffler';
 import GamesOwned from './components/GamesOwned';
 import ShuffleResult from './components/ShuffleResult';
@@ -13,6 +14,7 @@ export default () => {
 const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
 var gamePossibilities = [];
+var friendsListArray = [];
 
 function header() {
     const headerElement = document.querySelector('.header');
@@ -45,7 +47,7 @@ function socialClick() {
     const socialElement = document.querySelector('.social');
     socialElement.addEventListener('click', function() {
         appElement.innerHTML = FriendsList();
-        idButton();
+        socialIdButton();
     })
 }
 
@@ -58,10 +60,49 @@ function idButton() {
     })
 }
 
+function socialIdButton() {
+    const socialIdButtonElement = document.querySelector('.steam-id-button-social')
+    socialIdButtonElement.addEventListener('click', function() {
+        const socialSteamId = document.querySelector('.steam-id-input-social').value;
+        getFriendsList(socialSteamId)
+    })
+}
+
 function getFriendsList(steamID) {
     fetch(`http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=${steamAPIKey}&steamid=${steamID}&relationship=friend`)
     .then(response => response.json())
-    .then(results => console.log(results.friendslist.friends[0]))
+    .then(results => {
+        console.log(results.friendslist.friends[0].steamid)
+        appElement.innerHTML = FriendsListResults()
+        results.friendslist.friends.forEach(element => {
+            // const friendsListElement = document.createElement("P")
+            const friendsSteamId = element.steamid
+            // friendsListElement.innerHTML = friendsSteamId
+            // friendsDiv.appendChild(friendsListElement)
+            friendsListArray.push(friendsSteamId)
+        })
+        getFriendsListNames();
+    })
+    .catch(err => console.log(err))
+    console.log(friendsListArray)
+}
+
+function getFriendsListNames() {
+    console.log(friendsListArray)
+    const friendsListCommas = friendsListArray.join(",")
+    console.log(friendsListCommas)
+    const friendsDiv = document.querySelector('.friends-div')
+    fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${friendsListCommas}`)
+    .then(response => response.json())
+    .then(results => {
+        results.response.players.forEach(element => {
+            console.log(element.personaname)
+            const friendsListElement = document.createElement("P")
+            const friendsSteamName = element.personaname
+            friendsListElement.innerHTML = friendsSteamName
+            friendsDiv.appendChild(friendsListElement)
+        })
+    })
     .catch(err => console.log(err))
 }
 

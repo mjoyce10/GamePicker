@@ -66,37 +66,29 @@ function getFriendsList(steamID) {
 }
 
 function getGamesOwned(steamID) {
-    fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${steamID}&format=json`)
+    fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${steamID}&format=json&include_appinfo=1&include_played_free_games=1`)
     .then(response => response.json())
     .then(results => {
         console.log(results.response.games)
         appElement.innerHTML = GamesOwned()
-        shuffleButton()
-        for(let i = 0; i < results.response.games.length; i++) {
-        fetch(`http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v2/?key=${steamAPIKey}&appid=${results.response.games[i].appid}`)
-        .then(response => response.json())
-        .then(result => {
-            const gameName = result.game.gameName;
-            console.log(gameName)
-            const gameDiv = document.querySelector('.games')
-            if (gameName !== undefined && gameName.substring(0,9) !== "ValveTest" && gameName !== "") {
-            let gameNameElement = document.createElement("P")
-            gameNameElement.setAttribute("id", i)
+        const gameDiv = document.querySelector('.games')
+        results.response.games.forEach(element => {
+            console.log(element.name)
+            const gameName = element.name;
+            const gameNameElement = document.createElement("P");
             console.log(gameNameElement)
             gameNameElement.innerHTML = gameName;
             gameDiv.appendChild(gameNameElement)
-            gamePossibilities.push(gameName)
-        }
-        })
-        .catch(err => console.log(err))
-    }
+        });
+        gamePossibilities = results.response.games;
+        shuffleButton()
     })
     .catch(err => console.log(err))
 }
 
 function shuffleGames(){
     const shuffleResultElement = document.querySelector('.game-choice')
-    shuffleResultElement.innerText = `${gamePossibilities[Math.floor(Math.random()* gamePossibilities.length)]}`
+    shuffleResultElement.innerText = `${gamePossibilities[Math.floor(Math.random()* gamePossibilities.length)].name}`
 }
 
 function shuffleButton() {

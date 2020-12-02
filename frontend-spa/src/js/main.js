@@ -146,21 +146,23 @@ function getGamesOwned(steamID) {
     .then(results => {
         console.log(results)
         appElement.innerHTML = GamesOwned()
-        const gameDiv = document.querySelector('.games')
+        const allGamesDiv = document.querySelector('.games')
         results.response.games.forEach(element => {
-            console.log(element.name)
+            const gameDiv = document.createElement("DIV")
+            gameDiv.setAttribute("class", "game-div")
             const gameName = element.name;
             if(!gameName.includes("Public Test")) {
             const gameNameElement = document.createElement("P");
-            console.log(gameNameElement)
+            gameNameElement.setAttribute("class", "game-name")
             gameNameElement.innerHTML = gameName;
             gameDiv.appendChild(gameNameElement)
             const gameLogo = element.img_logo_url;
             const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${element.appid}/${gameLogo}.jpg`
             const gameImageElement = document.createElement("IMG");
-            console.log(gameImageElement)
+            gameImageElement.setAttribute("class", "game-logo")
             setDefaultImage(gameImageElement, imgURL, gameLogo)
             gameDiv.appendChild(gameImageElement)
+            allGamesDiv.appendChild(gameDiv)
         }
         });
         gamePossibilities = results.response.games;

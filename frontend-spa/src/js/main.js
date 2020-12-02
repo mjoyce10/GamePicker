@@ -118,40 +118,51 @@ function getFriendsListNames() {
     .then(response => response.json())
     .then(results => {
         results.response.players.forEach(element => {
-            console.log(element.personaname)
+            console.log(element.steamid)
+            const friendsListDiv = document.createElement("DIV")
+            friendsListDiv.setAttribute("class", "friends-list-div")
+            friendsListDiv.setAttribute("id", element.steamid)
+            console.log(friendsListDiv.id)
             const friendsListElement = document.createElement("P")
+            friendsListElement.setAttribute("class", "friend-name")
             const friendsSteamName = element.personaname
             friendsListElement.innerHTML = friendsSteamName
-            friendsDiv.appendChild(friendsListElement)
+            friendsListDiv.appendChild(friendsListElement)
             const friendsAvatarElement = document.createElement("IMG")
+            friendsAvatarElement.setAttribute("class", "friend-avatar")
             friendsAvatarElement.setAttribute("src", element.avatarmedium)
-            friendsDiv.appendChild(friendsAvatarElement)
+            friendsListDiv.appendChild(friendsAvatarElement)
+            friendsDiv.appendChild(friendsListDiv)
         })
+        getFriendsGames();
     })
     .catch(err => console.log(err))
 }
 
 function getGamesOwned(steamID) {
+    console.log(steamID);
     fetch(`https://cors-anywhere.herokuapp.com/http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${steamID}&format=json&include_appinfo=1&include_played_free_games=1`)
     .then(response => response.json())
     .then(results => {
-        console.log(results.response.games)
+        console.log(results)
         appElement.innerHTML = GamesOwned()
-        const gameDiv = document.querySelector('.games')
+        const allGamesDiv = document.querySelector('.games')
         results.response.games.forEach(element => {
-            console.log(element.name)
+            const gameDiv = document.createElement("DIV")
+            gameDiv.setAttribute("class", "game-div")
             const gameName = element.name;
             if(!gameName.includes("Public Test")) {
             const gameNameElement = document.createElement("P");
-            console.log(gameNameElement)
+            gameNameElement.setAttribute("class", "game-name")
             gameNameElement.innerHTML = gameName;
             gameDiv.appendChild(gameNameElement)
             const gameLogo = element.img_logo_url;
             const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${element.appid}/${gameLogo}.jpg`
             const gameImageElement = document.createElement("IMG");
-            console.log(gameImageElement)
+            gameImageElement.setAttribute("class", "game-logo")
             setDefaultImage(gameImageElement, imgURL, gameLogo)
             gameDiv.appendChild(gameImageElement)
+            allGamesDiv.appendChild(gameDiv)
         }
         });
         gamePossibilities = results.response.games;
@@ -188,4 +199,14 @@ function setDefaultImage(gameImage, imgURL, gameLogo) {
     else {
         gameImage.setAttribute("src", defaultGameImage)
     }
+}
+
+function getFriendsGames() {
+    const friendDiv = document.querySelectorAll('.friends-list-div')
+    friendDiv.forEach(element => {
+        element.addEventListener('click', function() {
+        console.log(element.id)
+        getGamesOwned(element.id)
+        })
+    })
 }

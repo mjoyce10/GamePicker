@@ -74,7 +74,7 @@ function socialClick() {
 }
 
 function displayUserNickname() {
-    fetch(`https://cors-anywhere.herokuapp.com/http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${mainUserSteamID}`)
+    fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${mainUserSteamID}`)
     .then(response => response.json())
     .then(result => {
         const userWelcomeElement = document.querySelector('.welcome-header')
@@ -93,7 +93,7 @@ function displayUserNickname() {
 }
 
 function getFriendsList(steamID) {
-    fetch(`https://cors-anywhere.herokuapp.com/http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=${steamAPIKey}&steamid=${steamID}&relationship=friend`)
+    fetch(`http://api.steampowered.com/ISteamUser/GetFriendList/v0001/?key=${steamAPIKey}&steamid=${steamID}&relationship=friend`)
     .then(response => response.json())
     .then(results => {
         friendsListArray.length = 0;
@@ -114,7 +114,7 @@ function getFriendsListNames() {
     const friendsListCommas = friendsListArray.join(",")
     console.log(friendsListCommas)
     const friendsDiv = document.querySelector('.friends-div')
-    fetch(`https://cors-anywhere.herokuapp.com/http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${friendsListCommas}`)
+    fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${friendsListCommas}`)
     .then(response => response.json())
     .then(results => {
         results.response.players.forEach(element => {
@@ -141,7 +141,7 @@ function getFriendsListNames() {
 
 function getGamesOwned(steamID) {
     console.log(steamID);
-    fetch(`https://cors-anywhere.herokuapp.com/http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${steamID}&format=json&include_appinfo=1&include_played_free_games=1`)
+    fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${steamID}&format=json&include_appinfo=1&include_played_free_games=1`)
     .then(response => response.json())
     .then(results => {
         console.log(results)

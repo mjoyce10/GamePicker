@@ -1,6 +1,7 @@
 export default function GamesOwned(){
     return `
-    <h2>List of Games</h2>
+    <div class="return-to-friends-list-div"></div>
+    <h2 class="games-owned-header"></h2>
     <button class="shuffle-btn">Shuffle</button>
     <div class="games">
     </div>

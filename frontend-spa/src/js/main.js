@@ -16,6 +16,7 @@ var gamePossibilities = [];
 var friendsListArray = [];
 const defaultGameImage = "../../images/default.jpg";
 let mainUserSteamID = "";
+const nav = document.querySelector('.nav')
 
 function header() {
     const headerElement = document.querySelector('.header');
@@ -146,6 +147,8 @@ function getGamesOwned(steamID) {
     .then(results => {
         console.log(results)
         appElement.innerHTML = GamesOwned()
+        gamesOwnedHeaderPersonalization(steamID)
+        addReturnToFriendsListButton(steamID)
         const allGamesDiv = document.querySelector('.games')
         results.response.games.forEach(element => {
             const gameDiv = document.createElement("DIV")
@@ -208,5 +211,33 @@ function getFriendsGames() {
         console.log(element.id)
         getGamesOwned(element.id)
         })
+    })
+}
+
+function gamesOwnedHeaderPersonalization(steamID) {
+    fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${steamID}`)
+        .then(response => response.json())
+        .then(results => {
+            const gamesOwnedHeader = document.querySelector('.games-owned-header')
+            gamesOwnedHeader.innerHTML = `List of Games Owned by ${results.response.players[0].personaname}`
+        })
+}
+
+function addReturnToFriendsListButton(steamID) {
+    if(steamID !== mainUserSteamID){
+        const returnToFriendsList = document.createElement("P")
+        returnToFriendsList.innerText = "Return to Friends List"
+        returnToFriendsList.setAttribute("class", "return-to-friends-list-element")
+        console.log(nav)
+        const returnToFriendsListDiv = document.querySelector('.return-to-friends-list-div')
+        returnToFriendsListDiv.appendChild(returnToFriendsList);
+    }
+    returnToFriendsList();
+}
+
+function returnToFriendsList() {
+    const returnToFriendsListElement = document.querySelector('.return-to-friends-list-element')
+    returnToFriendsListElement.addEventListener('click', function() {
+        getFriendsList(mainUserSteamID);
     })
 }

@@ -55,6 +55,7 @@ function saveSteamID() {
         mainUserSteamID = document.querySelector('.steam-id-input').value;
         console.log(mainUserSteamID)
         soloOrSocial();
+        displayUserNickname();
     })
 }
 
@@ -69,6 +70,20 @@ function socialClick() {
     const socialElement = document.querySelector('.social');
     socialElement.addEventListener('click', function() {
         getFriendsList(mainUserSteamID);    
+    })
+}
+
+function displayUserNickname() {
+    fetch(`https://cors-anywhere.herokuapp.com/http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${mainUserSteamID}`)
+    .then(response => response.json())
+    .then(result => {
+        const userWelcomeElement = document.querySelector('.welcome-header')
+        const userAvatarElement = document.querySelector('.user-avatar')
+        const userAvatar = result.response.players[0].avatarfull
+        const userName = result.response.players[0].personaname
+        console.log(userName)
+        userWelcomeElement.innerHTML = `Welcome, ${userName}`
+        userAvatarElement.setAttribute("src", userAvatar)
     })
 }
 

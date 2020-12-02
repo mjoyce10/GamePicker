@@ -1,77 +1,79 @@
-html{
-    height: 100%;
-    width: 100%;
+html {
+  height: 100%;
+  width: 100%;
 }
 
-body{
-    background-color: black;
-    color: blue;
-    font-family: 'Press Start 2P', cursive;
-    text-align: center;
+body {
+  background-color: black;
+  color: blue;
+  font-family: "Press Start 2P", cursive;
+  text-align: center;
 }
 
-.steam-id-container{
-    border-style: dotted;
-    border-color: rgb(233, 124, 124);
-    border-width: thick;
-    width: 500px;
-    height: 300px;
-    background-color: darkgray;
-    margin: auto;
-    margin-top: 5%;
+.steam-id-container {
+  border-style: dotted;
+  border-color: rgb(233, 124, 124);
+  border-width: thick;
+  width: 500px;
+  height: 100px;
+  background-color: darkgray;
+  margin: auto;
+  margin-top: 5%;
 }
 
-.inner-steam-id-container{
-    margin-top: 10%;
-    padding-top: 15%;
+.inner-steam-id-container {
+  /* margin-top: 10%;*/
+  padding-top: 6.5%;
 }
 
-.nav-home{
-    width: 100px;
-    height: 40px;
-    text-align: center;
-    padding-top: 20px;
-    margin: auto;
-    color: yellow;
-
+.nav-home {
+  width: 100px;
+  height: 40px;
+  text-align: center;
+  padding-top: 20px;
+  margin: auto;
+  color: yellow;
 }
 
-.nav-home:hover{
-    background-color: gray;
+.nav-home:hover {
+  background-color: gray;
 }
 
-.enter-steam-id-title{
-    color: orange;
+.enter-steam-id-title {
+  color: orange;
 }
 
-.games{
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-column-gap: 16px;
-    grid-row-gap: 16px;
-    margin-top: 3%;
+.games {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
+  margin-top: 3%;
 }
 
-.game-div{
-    background-color: gray;
-    padding-bottom: 8px;
-    border-style: solid;
-    border-color: rgb(43, 216, 43);
+.game-div {
+  background-color: gray;
+  padding-bottom: 8px;
+  border-style: solid;
+  border-color: rgb(43, 216, 43);
 }
 
-.friends-list-div{
-    background-color: gray;
-    border-style: solid;
-    border-color: red;
-    padding-bottom: 8px;
+.friends-list-div {
+  background-color: gray;
+  border-style: solid;
+  border-color: red;
+  padding-bottom: 8px;
 }
 
-.friends-div{
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    grid-column-gap: 16px;
-    grid-row-gap: 16px;
+.friends-div {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  grid-column-gap: 16px;
+  grid-row-gap: 16px;
 }
 
-
-
+input,
+button {
+  font-family: "Press Start 2P", cursive;
+  padding: 0.5rem;
+}

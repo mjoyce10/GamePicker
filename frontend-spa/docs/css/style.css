@@ -11,8 +11,9 @@ body{
 }
 
 .steam-id-container{
-    border-style: solid;
-    border-color: red;
+    border-style: dotted;
+    border-color: rgb(233, 124, 124);
+    border-width: thick;
     width: 500px;
     height: 300px;
     background-color: darkgray;
@@ -23,5 +24,23 @@ body{
 .inner-steam-id-container{
     margin-top: 10%;
     padding-top: 15%;
+}
+
+.nav-home{
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    padding-top: 20px;
+    margin: auto;
+    color: yellow;
+
+}
+
+.nav-home:hover{
+    background-color: gray;
+}
+
+.enter-steam-id-title{
+    color: orange;
 }
 

@@ -44,3 +44,19 @@ body{
     color: orange;
 }
 
+.games{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    grid-column-gap: 16px;
+    grid-row-gap: 16px;
+    margin-top: 3%;
+}
+
+.game-div{
+    background-color: gray;
+    padding-bottom: 8px;
+    border-style: solid;
+    border-color: rgb(43, 216, 43);
+}
+
+

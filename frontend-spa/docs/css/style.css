@@ -1,0 +1,46 @@
+html{
+    height: 100%;
+    width: 100%;
+}
+
+body{
+    background-color: black;
+    color: blue;
+    font-family: 'Press Start 2P', cursive;
+    text-align: center;
+}
+
+.steam-id-container{
+    border-style: dotted;
+    border-color: rgb(233, 124, 124);
+    border-width: thick;
+    width: 500px;
+    height: 300px;
+    background-color: darkgray;
+    margin: auto;
+    margin-top: 5%;
+}
+
+.inner-steam-id-container{
+    margin-top: 10%;
+    padding-top: 15%;
+}
+
+.nav-home{
+    width: 100px;
+    height: 40px;
+    text-align: center;
+    padding-top: 20px;
+    margin: auto;
+    color: yellow;
+
+}
+
+.nav-home:hover{
+    background-color: gray;
+}
+
+.enter-steam-id-title{
+    color: orange;
+}
+

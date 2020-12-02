@@ -228,7 +228,6 @@ function addReturnToFriendsListButton(steamID) {
         const returnToFriendsListElement = document.createElement("P")
         returnToFriendsListElement.innerText = "Return to Friends List"
         returnToFriendsListElement.setAttribute("class", "return-to-friends-list-element")
-        console.log(nav)
         const returnToFriendsListDiv = document.querySelector('.return-to-friends-list-div')
         returnToFriendsListDiv.appendChild(returnToFriendsListElement);
         returnToFriendsList();

@@ -38,6 +38,7 @@ function reenterSteamID() {
 
 function soloOrSocial() {
     appElement.innerHTML = SoloOrSocial()
+    displayUserNickname();
     socialClick();
     soloClick();
     reenterSteamID();
@@ -56,7 +57,6 @@ function saveSteamID() {
         mainUserSteamID = document.querySelector('.steam-id-input').value;
         console.log(mainUserSteamID)
         soloOrSocial();
-        displayUserNickname();
     })
 }
 
@@ -225,14 +225,14 @@ function gamesOwnedHeaderPersonalization(steamID) {
 
 function addReturnToFriendsListButton(steamID) {
     if(steamID !== mainUserSteamID){
-        const returnToFriendsList = document.createElement("P")
-        returnToFriendsList.innerText = "Return to Friends List"
-        returnToFriendsList.setAttribute("class", "return-to-friends-list-element")
+        const returnToFriendsListElement = document.createElement("P")
+        returnToFriendsListElement.innerText = "Return to Friends List"
+        returnToFriendsListElement.setAttribute("class", "return-to-friends-list-element")
         console.log(nav)
         const returnToFriendsListDiv = document.querySelector('.return-to-friends-list-div')
-        returnToFriendsListDiv.appendChild(returnToFriendsList);
+        returnToFriendsListDiv.appendChild(returnToFriendsListElement);
+        returnToFriendsList();
     }
-    returnToFriendsList();
 }
 
 function returnToFriendsList() {

@@ -4,6 +4,7 @@ import FriendsListResults from './components/FriendsListResults';
 import GamesOwned from './components/GamesOwned';
 import ShuffleResult from './components/ShuffleResult';
 import SoloOrSocial from './components/SoloOrSocial';
+import CompareGames from './components/CompareGames';
 
 export default () => {
     header();
@@ -13,7 +14,9 @@ export default () => {
 const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
 var gamePossibilities = [];
+var mainUserGames = [];
 var friendsListArray = [];
+var gameMatches = []
 const defaultGameImage = "../../images/default.jpg";
 let mainUserSteamID = "";
 const nav = document.querySelector('.nav')
@@ -149,6 +152,7 @@ function getGamesOwned(steamID) {
         appElement.innerHTML = GamesOwned()
         gamesOwnedHeaderPersonalization(steamID)
         addReturnToFriendsListButton(steamID)
+        addCompareGamesButton(steamID)
         const allGamesDiv = document.querySelector('.games')
         results.response.games.forEach(element => {
             const gameDiv = document.createElement("DIV")
@@ -176,12 +180,24 @@ function getGamesOwned(steamID) {
 
 function shuffleGames(){
     const shuffleResultElement = document.querySelector('.game-choice')
+    const playTimeElement = document.querySelector('.play-time')
     let arrayPosition = Math.floor(Math.random()* gamePossibilities.length);
     shuffleResultElement.innerText = `${gamePossibilities[arrayPosition].name}`
+    let playTime = (gamePossibilities[arrayPosition].playtime_forever/60).toFixed(2);
+    playTimeDisplay(playTimeElement, playTime);
     const gameImage = document.querySelector('.game-choice-image')
     const gameLogo = gamePossibilities[arrayPosition].img_logo_url
     const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${gamePossibilities[arrayPosition].appid}/${gameLogo}.jpg`
     setDefaultImage(gameImage, imgURL, gameLogo)
+}
+
+function playTimeDisplay(playTimeElement, playTime){
+    if(playTime > 0){
+        playTimeElement.innerText = `You have played this game for ${playTime} hours.`
+    }
+    else {
+        playTimeElement.innerText = "You have never played this game."
+    }
 }
 
 function shuffleButton() {
@@ -239,4 +255,62 @@ function returnToFriendsList() {
     returnToFriendsListElement.addEventListener('click', function() {
         getFriendsList(mainUserSteamID);
     })
+}
+
+function addCompareGamesButton(steamID) {
+    if (steamID !== mainUserSteamID){
+        const compareGamesElement = document.createElement("BUTTON")
+        compareGamesElement.innerText = "Compare Games"
+        compareGamesElement.setAttribute("class", "compare-games-element")
+        const compareGamesDiv = document.querySelector('.compare-games-div')
+        compareGamesDiv.appendChild(compareGamesElement)
+        compareGamesDisplay(compareGamesElement)
+    }
+}
+
+function compareGamesDisplay(compareGamesElement) {
+    compareGamesElement.addEventListener("click", function(){
+    appElement.innerHTML = CompareGames()
+    compareGames()
+    })
+}
+
+function compareGames() {
+    fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${mainUserSteamID}&format=json&include_appinfo=1&include_played_free_games=1`)
+    .then(response => response.json())
+    .then(results => {
+        mainUserGames = results.response.games
+        console.log(mainUserGames)
+        getMatches()
+        gameMatches.forEach(game => {
+            const gameMatchesDiv = document.createElement("DIV")
+            gameMatchesDiv.setAttribute("class", "game-match")
+            const gameMatchElement = document.createElement("P")
+            gameMatchElement.setAttribute("class", "game-match-element")
+            gameMatchElement.innerText = game.name
+            const gameMatchLogo = document.createElement("IMG")
+            gameMatchLogo.setAttribute("class", "game-match-logo")
+            const gameLogo = game.img_logo_url
+            const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${gameLogo}.jpg`
+            console.log(imgURL)
+            gameMatchLogo.setAttribute("src", imgURL)
+            const allGameMatchesDiv = document.querySelector('.game-matches')
+            gameMatchesDiv.appendChild(gameMatchElement)
+            gameMatchesDiv.appendChild(gameMatchLogo)
+            allGameMatchesDiv.appendChild(gameMatchesDiv)
+        })
+    })
+    .catch(err => console.log(err))
+}
+
+function getMatches() {
+    gameMatches.length = 0;
+    for (let i=0; i < gamePossibilities.length; i++) {
+        for (let x=0; x < mainUserGames.length; x++) {
+            if (gamePossibilities[i].appid === mainUserGames[x].appid) {
+                gameMatches.push(gamePossibilities[i])
+            }
+        }
+    }
+    console.log(gameMatches)
 }

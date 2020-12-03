@@ -14,7 +14,9 @@ export default () => {
 const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
 var gamePossibilities = [];
+var mainUserGames = [];
 var friendsListArray = [];
+var gameMatches = []
 const defaultGameImage = "../../images/default.jpg";
 let mainUserSteamID = "";
 const nav = document.querySelector('.nav')
@@ -269,5 +271,34 @@ function addCompareGamesButton(steamID) {
 function compareGamesDisplay(compareGamesElement) {
     compareGamesElement.addEventListener("click", function(){
     appElement.innerHTML = CompareGames()
+    compareGames()
     })
+}
+
+function compareGames() {
+    fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${mainUserSteamID}&format=json&include_appinfo=1&include_played_free_games=1`)
+    .then(response => response.json())
+    .then(results => {
+        mainUserGames = results.response.games  
+    })
+    .catch(err => console.log(err))
+    console.log(mainUserGames)
+    getMatches()
+    gameMatches.forEach(game => {
+        const gameMatchElement = document.createElement("P")
+        gameMatchElement.innerText = game.name
+        const gameMatchesDiv = document.querySelector('.game-matches')
+        gameMatchesDiv.appendChild(gameMatchElement)
+    })
+}
+
+function getMatches() {
+    for (let i=0; i < gamePossibilities.length; i++) {
+        for (let x=0; x < mainUserGames.length; x++) {
+            if (gamePossibilities[i].appid === mainUserGames[x].appid) {
+                gameMatches.push(gamePossibilities[i])
+            }
+        }
+    }
+    console.log(gameMatches)
 }

@@ -279,20 +279,32 @@ function compareGames() {
     fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${mainUserSteamID}&format=json&include_appinfo=1&include_played_free_games=1`)
     .then(response => response.json())
     .then(results => {
-        mainUserGames = results.response.games  
+        mainUserGames = results.response.games
+        console.log(mainUserGames)
+        getMatches()
+        gameMatches.forEach(game => {
+            const gameMatchesDiv = document.createElement("DIV")
+            gameMatchesDiv.setAttribute("class", "game-match")
+            const gameMatchElement = document.createElement("P")
+            gameMatchElement.setAttribute("class", "game-match-element")
+            gameMatchElement.innerText = game.name
+            const gameMatchLogo = document.createElement("IMG")
+            gameMatchLogo.setAttribute("class", "game-match-logo")
+            const gameLogo = game.img_logo_url
+            const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${gameLogo}.jpg`
+            console.log(imgURL)
+            gameMatchLogo.setAttribute("src", imgURL)
+            const allGameMatchesDiv = document.querySelector('.game-matches')
+            gameMatchesDiv.appendChild(gameMatchElement)
+            gameMatchesDiv.appendChild(gameMatchLogo)
+            allGameMatchesDiv.appendChild(gameMatchesDiv)
+        })
     })
     .catch(err => console.log(err))
-    console.log(mainUserGames)
-    getMatches()
-    gameMatches.forEach(game => {
-        const gameMatchElement = document.createElement("P")
-        gameMatchElement.innerText = game.name
-        const gameMatchesDiv = document.querySelector('.game-matches')
-        gameMatchesDiv.appendChild(gameMatchElement)
-    })
 }
 
 function getMatches() {
+    gameMatches.length = 0;
     for (let i=0; i < gamePossibilities.length; i++) {
         for (let x=0; x < mainUserGames.length; x++) {
             if (gamePossibilities[i].appid === mainUserGames[x].appid) {

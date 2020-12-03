@@ -176,12 +176,24 @@ function getGamesOwned(steamID) {
 
 function shuffleGames(){
     const shuffleResultElement = document.querySelector('.game-choice')
+    const playTimeElement = document.querySelector('.play-time')
     let arrayPosition = Math.floor(Math.random()* gamePossibilities.length);
     shuffleResultElement.innerText = `${gamePossibilities[arrayPosition].name}`
+    let playTime = (gamePossibilities[arrayPosition].playtime_forever/60).toFixed(2);
+    playTimeDisplay(playTimeElement, playTime);
     const gameImage = document.querySelector('.game-choice-image')
     const gameLogo = gamePossibilities[arrayPosition].img_logo_url
     const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${gamePossibilities[arrayPosition].appid}/${gameLogo}.jpg`
     setDefaultImage(gameImage, imgURL, gameLogo)
+}
+
+function playTimeDisplay(playTimeElement, playTime){
+    if(playTime > 0){
+        playTimeElement.innerText = `You have played this game for ${playTime} hours.`
+    }
+    else {
+        playTimeElement.innerText = "You have never played this game."
+    }
 }
 
 function shuffleButton() {

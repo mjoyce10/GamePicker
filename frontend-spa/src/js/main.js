@@ -4,6 +4,7 @@ import FriendsListResults from './components/FriendsListResults';
 import GamesOwned from './components/GamesOwned';
 import ShuffleResult from './components/ShuffleResult';
 import SoloOrSocial from './components/SoloOrSocial';
+import CompareGames from './components/CompareGames';
 
 export default () => {
     header();
@@ -149,6 +150,7 @@ function getGamesOwned(steamID) {
         appElement.innerHTML = GamesOwned()
         gamesOwnedHeaderPersonalization(steamID)
         addReturnToFriendsListButton(steamID)
+        addCompareGamesButton(steamID)
         const allGamesDiv = document.querySelector('.games')
         results.response.games.forEach(element => {
             const gameDiv = document.createElement("DIV")
@@ -250,5 +252,22 @@ function returnToFriendsList() {
     const returnToFriendsListElement = document.querySelector('.return-to-friends-list-element')
     returnToFriendsListElement.addEventListener('click', function() {
         getFriendsList(mainUserSteamID);
+    })
+}
+
+function addCompareGamesButton(steamID) {
+    if (steamID !== mainUserSteamID){
+        const compareGamesElement = document.createElement("BUTTON")
+        compareGamesElement.innerText = "Compare Games"
+        compareGamesElement.setAttribute("class", "compare-games-element")
+        const compareGamesDiv = document.querySelector('.compare-games-div')
+        compareGamesDiv.appendChild(compareGamesElement)
+        compareGamesDisplay(compareGamesElement)
+    }
+}
+
+function compareGamesDisplay(compareGamesElement) {
+    compareGamesElement.addEventListener("click", function(){
+    appElement.innerHTML = CompareGames()
     })
 }

@@ -9,7 +9,6 @@ namespace GamePicker.Models
     {
         public int Id { get; set; }
         public int SteamId { get; set; }
-        public string Persona { get; set; }
-        public string UserIcon { get; set; }
+        public IEnumerable<FavoriteFriend> FriendsList { get; set; }
     }
 }

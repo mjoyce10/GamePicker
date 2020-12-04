@@ -332,9 +332,9 @@ function compareGames() {
             const buttonsDiv = document.querySelector('.buttons')
             buttonsDiv.removeChild(shuffleButton)
             const noGamesInCommon = document.createElement("P")
-            const allGameMatchesDiv = document.querySelector('.game-matches')
+            const noGamesDiv = document.querySelector('.no-games')
             noGamesInCommon.innerText = "None."
-            allGameMatchesDiv.appendChild(noGamesInCommon)
+            noGamesDiv.appendChild(noGamesInCommon)
         }
     })
     .catch(err => console.log(err))

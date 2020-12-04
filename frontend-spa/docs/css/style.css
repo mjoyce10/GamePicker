@@ -32,8 +32,8 @@ h2 {
   border-style: dotted;
   border-color: rgb(233, 124, 124);
   border-width: thick;
-  width: 500px;
-  height: 100px;
+  width: 31.25rem;
+  height: 6.25rem;
   background-color: darkgray;
   margin: auto;
   margin-top: 5%;
@@ -48,19 +48,21 @@ h2 {
   color: orange;
 }
 
-.games {
+.games,
+.game-matches {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
   margin-top: 3%;
   max-width: 85%;
   margin: auto;
 }
 
-.game-div {
+.game-div,
+.game-match {
   background-color: gray;
-  padding-bottom: 8px;
+  padding-bottom: 0.5rem;
   border-style: solid;
   border-color: rgb(43, 216, 43);
 }
@@ -85,8 +87,8 @@ h2 {
 .friends-div {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  grid-column-gap: 16px;
-  grid-row-gap: 16px;
+  grid-column-gap: 1rem;
+  grid-row-gap: 1rem;
   max-width: 85%;
   margin: auto;
 }
@@ -94,6 +96,15 @@ h2 {
 .friends-list-header,
 .games-owned-header {
   margin-bottom: 2rem;
+}
+
+button,
+.solo,
+.social,
+.re-enter,
+.nav-home,
+.friend-div {
+  cursor: pointer;
 }
 
 input,
@@ -126,4 +137,8 @@ button {
 
 .re-enter {
   color: red;
+}
+
+.shuffle-matches-btn {
+  margin: 2rem;
 }

@@ -51,6 +51,7 @@ function navHome(){
     const navHomeElement = document.querySelector('.nav-home')
     navHomeElement.addEventListener('click', function() {
         soloOrSocial();
+        deleteReturnToFriendsListButton()
     })
 }
 
@@ -103,6 +104,7 @@ function getFriendsList(steamID) {
         friendsListArray.length = 0;
         console.log(results.friendslist.friends[0].steamid)
         appElement.innerHTML = FriendsListResults()
+        deleteReturnToFriendsListButton()
         results.friendslist.friends.forEach(element => {
             const friendsSteamId = element.steamid
             friendsListArray.push(friendsSteamId)
@@ -250,6 +252,14 @@ function addReturnToFriendsListButton(steamID) {
     }
 }
 
+function deleteReturnToFriendsListButton() {
+    const nav = document.querySelector('.nav')
+    if(nav.childElementCount === 2) {
+    const returnToFriendsListElement = document.querySelector('.return-to-friends-list-element')
+    nav.removeChild(returnToFriendsListElement)
+    }
+}
+
 function returnToFriendsList() {
     const returnToFriendsListElement = document.querySelector('.return-to-friends-list-element')
     returnToFriendsListElement.addEventListener('click', function() {
@@ -263,7 +273,7 @@ function addCompareGamesButton(steamID) {
         compareGamesElement.innerText = "Compare Games"
         compareGamesElement.setAttribute("class", "compare-games-element")
         const shuffleButton = document.querySelector('.shuffle-btn')
-        const buttonsDiv= document.querySelector('.buttons')
+        const buttonsDiv = document.querySelector('.buttons')
         buttonsDiv.appendChild(compareGamesElement)
         buttonsDiv.removeChild(shuffleButton)
         compareGamesDisplay(compareGamesElement)
@@ -284,7 +294,9 @@ function compareGames() {
     .then(results => {
         mainUserGames = results.response.games
         console.log(mainUserGames)
+        gameMatches.length = 0;
         getMatches()
+        if(gameMatches.length !== 0) {
         gameMatches.forEach(game => {
             const gameMatchesDiv = document.createElement("DIV")
             gameMatchesDiv.setAttribute("class", "game-match")
@@ -302,13 +314,22 @@ function compareGames() {
             gameMatchesDiv.appendChild(gameMatchLogo)
             allGameMatchesDiv.appendChild(gameMatchesDiv)
         })
+        }
+        else {
+            const shuffleButton = document.querySelector('.shuffle-btn')
+            const buttonsDiv = document.querySelector('.buttons')
+            buttonsDiv.removeChild(shuffleButton)
+            const noGamesInCommon = document.createElement("P")
+            const allGameMatchesDiv = document.querySelector('.game-matches')
+            noGamesInCommon.innerText = "None."
+            allGameMatchesDiv.appendChild(noGamesInCommon)
+        }
     })
     .catch(err => console.log(err))
 }
 
 function getMatches() {
-    gameMatches.length = 0;
-    for (let i=0; i < gamePossibilities.length; i++) {
+        for (let i=0; i < gamePossibilities.length; i++) {
         for (let x=0; x < mainUserGames.length; x++) {
             if (gamePossibilities[i].appid === mainUserGames[x].appid) {
                 gameMatches.push(gamePossibilities[i])

@@ -5,6 +5,7 @@ export default function GamesOwned(){
         <button class="shuffle-btn">Shuffle</button>
     </div>
     <h2 class="games-owned-header"></h2>
+    <div class="no-games-div"></div>
     <div class="compare-games-div"></div>
     <div class="games">
     </div>

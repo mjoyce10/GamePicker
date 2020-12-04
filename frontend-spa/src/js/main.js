@@ -156,6 +156,7 @@ function getGamesOwned(steamID) {
         addReturnToFriendsListButton(steamID)
         addCompareGamesButton(steamID)
         const allGamesDiv = document.querySelector('.games')
+        if(results.response.games !== undefined) {
         results.response.games.forEach(element => {
             const gameDiv = document.createElement("DIV")
             gameDiv.setAttribute("class", "game-div")
@@ -174,6 +175,17 @@ function getGamesOwned(steamID) {
             allGamesDiv.appendChild(gameDiv)
         }
         });
+    }
+        else {
+            const compareGamesDiv = document.querySelector('.buttons')
+            const compareGamesButton = document.querySelector('.compare-games-element')
+            compareGamesDiv.removeChild(compareGamesButton)
+            const noGamesImage = document.createElement("IMG")
+            noGamesImage.setAttribute("class", "no-games-image")
+            noGamesImage.setAttribute("src", "../../images/no-games.png")
+            const noGamesDiv = document.querySelector('.no-games-div')
+            noGamesDiv.appendChild(noGamesImage)
+        }
         gamePossibilities = results.response.games;
         shuffleButton(gamePossibilities)
     })

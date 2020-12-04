@@ -6,7 +6,7 @@ using GamePicker.Models;
 
 namespace GamePicker.Repositories
 {
-    public class FriendsListRepository : Repository<FriendsList>, IRepository<FriendsList>
+    public class FriendsListRepository : Repository<FavoriteFriend>, IRepository<FavoriteFriend>
     {
         GPContext db;
         public FriendsListRepository(GPContext context) : base(context)

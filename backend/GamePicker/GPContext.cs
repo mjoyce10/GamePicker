@@ -10,7 +10,7 @@ namespace GamePicker
 {
     public class GPContext : DbContext
     {
-        public DbSet<FriendsList> FriendsLists { get; set; }
+        public DbSet<FavoriteFriend> FriendsLists { get; set; }
         public DbSet<User> Users { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -21,5 +21,14 @@ namespace GamePicker
 
         base.OnConfiguring(optionsBuilder);
     }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+                new User()
+                {
+                    Id = 1,
+                    SteamId = "76561198060349295",
+                });
+        }
     }
 }

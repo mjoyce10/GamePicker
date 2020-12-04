@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using GamePicker.Models;
+using GamePicker.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -19,6 +21,7 @@ namespace GamePicker
         {
             Configuration = configuration;
         }
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
         public IConfiguration Configuration { get; }
 
@@ -26,7 +29,27 @@ namespace GamePicker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddDbContext<GPContext>();
+            services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<FavoriteFriend>, FriendsListRepository>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy(MyAllowSpecificOrigins,
+                builder =>
+                {
+                    builder.WithOrigins("http://localhost:8080",
+                                        "https://localhost:8080")
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:8081",
+                                        "https://localhost:8081")
+                                        .AllowAnyHeader()
+                                        .AllowAnyMethod();
+                });
+            });
         }
+
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -35,6 +58,8 @@ namespace GamePicker
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCors(MyAllowSpecificOrigins);
 
             app.UseHttpsRedirection();
 

@@ -19,7 +19,7 @@ var friendsListArray = [];
 var gameMatches = []
 const defaultGameImage = "../../images/default.jpg";
 let mainUserSteamID = "";
-const nav = document.querySelector('.nav')
+let returnToFriendsListElement = "";
 
 function header() {
     const headerElement = document.querySelector('.header');
@@ -51,6 +51,7 @@ function navHome(){
     const navHomeElement = document.querySelector('.nav-home')
     navHomeElement.addEventListener('click', function() {
         soloOrSocial();
+        deleteReturnToFriendsListButton()
     })
 }
 
@@ -103,6 +104,7 @@ function getFriendsList(steamID) {
         friendsListArray.length = 0;
         console.log(results.friendslist.friends[0].steamid)
         appElement.innerHTML = FriendsListResults()
+        deleteReturnToFriendsListButton()
         results.friendslist.friends.forEach(element => {
             const friendsSteamId = element.steamid
             friendsListArray.push(friendsSteamId)
@@ -124,18 +126,18 @@ function getFriendsListNames() {
         results.response.players.forEach(element => {
             console.log(element.steamid)
             const friendsListDiv = document.createElement("DIV")
-            friendsListDiv.setAttribute("class", "friends-list-div")
+            friendsListDiv.setAttribute("class", "friend-div")
             friendsListDiv.setAttribute("id", element.steamid)
             console.log(friendsListDiv.id)
             const friendsListElement = document.createElement("P")
             friendsListElement.setAttribute("class", "friend-name")
             const friendsSteamName = element.personaname
             friendsListElement.innerHTML = friendsSteamName
-            friendsListDiv.appendChild(friendsListElement)
             const friendsAvatarElement = document.createElement("IMG")
             friendsAvatarElement.setAttribute("class", "friend-avatar")
             friendsAvatarElement.setAttribute("src", element.avatarmedium)
             friendsListDiv.appendChild(friendsAvatarElement)
+            friendsListDiv.appendChild(friendsListElement)
             friendsDiv.appendChild(friendsListDiv)
         })
         getFriendsGames();
@@ -154,6 +156,7 @@ function getGamesOwned(steamID) {
         addReturnToFriendsListButton(steamID)
         addCompareGamesButton(steamID)
         const allGamesDiv = document.querySelector('.games')
+        if(results.response.games !== undefined) {
         results.response.games.forEach(element => {
             const gameDiv = document.createElement("DIV")
             gameDiv.setAttribute("class", "game-div")
@@ -172,6 +175,17 @@ function getGamesOwned(steamID) {
             allGamesDiv.appendChild(gameDiv)
         }
         });
+    }
+        else {
+            const compareGamesDiv = document.querySelector('.buttons')
+            const compareGamesButton = document.querySelector('.compare-games-element')
+            compareGamesDiv.removeChild(compareGamesButton)
+            const noGamesImage = document.createElement("IMG")
+            noGamesImage.setAttribute("class", "no-games-image")
+            noGamesImage.setAttribute("src", "../../images/no-games.png")
+            const noGamesDiv = document.querySelector('.no-games-div')
+            noGamesDiv.appendChild(noGamesImage)
+        }
         gamePossibilities = results.response.games;
         shuffleButton(gamePossibilities)
     })
@@ -221,7 +235,7 @@ function setDefaultImage(gameImage, imgURL, gameLogo) {
 }
 
 function getFriendsGames() {
-    const friendDiv = document.querySelectorAll('.friends-list-div')
+    const friendDiv = document.querySelectorAll('.friend-div')
     friendDiv.forEach(element => {
         element.addEventListener('click', function() {
         console.log(element.id)
@@ -240,13 +254,21 @@ function gamesOwnedHeaderPersonalization(steamID) {
 }
 
 function addReturnToFriendsListButton(steamID) {
-    if(steamID !== mainUserSteamID){
-        const returnToFriendsListElement = document.createElement("P")
+    const nav = document.querySelector('.nav')
+    if(steamID !== mainUserSteamID && nav.childElementCount === 1){
+        returnToFriendsListElement = document.createElement("P")
         returnToFriendsListElement.innerText = "Return to Friends List"
         returnToFriendsListElement.setAttribute("class", "return-to-friends-list-element")
-        const returnToFriendsListDiv = document.querySelector('.return-to-friends-list-div')
-        returnToFriendsListDiv.appendChild(returnToFriendsListElement);
+        nav.appendChild(returnToFriendsListElement);
         returnToFriendsList();
+    }
+}
+
+function deleteReturnToFriendsListButton() {
+    const nav = document.querySelector('.nav')
+    if(nav.childElementCount === 2) {
+    const returnToFriendsListElement = document.querySelector('.return-to-friends-list-element')
+    nav.removeChild(returnToFriendsListElement)
     }
 }
 
@@ -262,8 +284,10 @@ function addCompareGamesButton(steamID) {
         const compareGamesElement = document.createElement("BUTTON")
         compareGamesElement.innerText = "Compare Games"
         compareGamesElement.setAttribute("class", "compare-games-element")
-        const compareGamesDiv = document.querySelector('.compare-games-div')
-        compareGamesDiv.appendChild(compareGamesElement)
+        const shuffleButton = document.querySelector('.shuffle-btn')
+        const buttonsDiv = document.querySelector('.buttons')
+        buttonsDiv.appendChild(compareGamesElement)
+        buttonsDiv.removeChild(shuffleButton)
         compareGamesDisplay(compareGamesElement)
     }
 }
@@ -282,7 +306,9 @@ function compareGames() {
     .then(results => {
         mainUserGames = results.response.games
         console.log(mainUserGames)
+        gameMatches.length = 0;
         getMatches()
+        if(gameMatches.length !== 0) {
         gameMatches.forEach(game => {
             const gameMatchesDiv = document.createElement("DIV")
             gameMatchesDiv.setAttribute("class", "game-match")
@@ -300,13 +326,22 @@ function compareGames() {
             gameMatchesDiv.appendChild(gameMatchLogo)
             allGameMatchesDiv.appendChild(gameMatchesDiv)
         })
+        }
+        else {
+            const shuffleButton = document.querySelector('.shuffle-btn')
+            const buttonsDiv = document.querySelector('.buttons')
+            buttonsDiv.removeChild(shuffleButton)
+            const noGamesInCommon = document.createElement("P")
+            const noGamesDiv = document.querySelector('.no-games')
+            noGamesInCommon.innerText = "None."
+            noGamesDiv.appendChild(noGamesInCommon)
+        }
     })
     .catch(err => console.log(err))
 }
 
 function getMatches() {
-    gameMatches.length = 0;
-    for (let i=0; i < gamePossibilities.length; i++) {
+        for (let i=0; i < gamePossibilities.length; i++) {
         for (let x=0; x < mainUserGames.length; x++) {
             if (gamePossibilities[i].appid === mainUserGames[x].appid) {
                 gameMatches.push(gamePossibilities[i])

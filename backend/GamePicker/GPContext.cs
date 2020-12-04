@@ -21,5 +21,14 @@ namespace GamePicker
 
         base.OnConfiguring(optionsBuilder);
     }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>().HasData(
+                new User()
+                {
+                    Id = 1,
+                    SteamId = "76561198060349295",
+                });
+        }
     }
 }

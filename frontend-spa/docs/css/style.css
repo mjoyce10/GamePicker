@@ -10,6 +10,24 @@ body {
   text-align: center;
 }
 
+nav {
+  display: flex;
+  justify-content: center;
+  color: yellow;
+}
+
+nav > * {
+  padding: 1rem 3rem;
+}
+
+nav > *:hover {
+  background-color: gray;
+}
+
+h2 {
+  color: orange;
+}
+
 .steam-id-container {
   border-style: dotted;
   border-color: rgb(233, 124, 124);
@@ -24,19 +42,6 @@ body {
 .inner-steam-id-container {
   /* margin-top: 10%;*/
   padding-top: 6.5%;
-}
-
-.nav-home {
-  width: 100px;
-  height: 40px;
-  text-align: center;
-  padding-top: 20px;
-  margin: auto;
-  color: yellow;
-}
-
-.nav-home:hover {
-  background-color: gray;
 }
 
 .enter-steam-id-title {
@@ -60,11 +65,21 @@ body {
   border-color: rgb(43, 216, 43);
 }
 
-.friends-list-div {
+.friend-div {
   background-color: gray;
   border-style: solid;
   border-color: red;
-  padding-bottom: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.friend-div:hover {
+  background-color: rgb(110, 108, 108);
+  border-color: rgb(43, 216, 43);
+}
+
+.friend-avatar {
+  padding: 1rem;
 }
 
 .friends-div {
@@ -76,21 +91,17 @@ body {
   margin: auto;
 }
 
+.friends-list-header,
+.games-owned-header {
+  margin-bottom: 2rem;
+}
+
 input,
 button {
   font-family: "Press Start 2P", cursive;
   padding: 0.5rem;
 }
 
-.shuffle-btn {
-  margin: 1.5rem;
-}
-
-.compare-games-element {
-  margin-bottom: 1.5rem;
-}
-
-.return-to-friends-list-element,
 .solo,
 .social,
 .re-enter {
@@ -99,19 +110,14 @@ button {
   padding: 1rem;
 }
 
-.return-to-friends-list-element:hover,
 .solo:hover,
 .social:hover,
 .re-enter:hover {
   background-color: gray;
 }
 
-.return-to-friends-list-element {
-  color: yellow;
-}
-
 .solo {
-  color:orange;
+  color: orange;
 }
 
 .social {

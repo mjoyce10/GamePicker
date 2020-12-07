@@ -22,20 +22,20 @@ namespace GamePicker.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1);
+            //migrationBuilder.DeleteData(
+            //    table: "Users",
+            //    keyColumn: "Id",
+            //    keyValue: 1);
 
-            migrationBuilder.AlterColumn<int>(
-                name: "SteamId",
-                table: "Users",
-                type: "int",
-                nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+            //migrationBuilder.AlterColumn<int>(
+            //    name: "SteamId",
+            //    table: "Users",
+            //    type: "int",
+            //    nullable: false,
+            //    defaultValue: 0,
+            //    oldClrType: typeof(string),
+            //    oldType: "nvarchar(max)",
+            //    oldNullable: true);
         }
     }
 }

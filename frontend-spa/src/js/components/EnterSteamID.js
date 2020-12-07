@@ -7,5 +7,6 @@ export default function EnterSteamID() {
             <button class="steam-id-button">Submit</button>
         </div>
     </div>
+    <div class="recent-users"></div>
     `
 }

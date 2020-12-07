@@ -15,6 +15,7 @@ const steamAPIKey = 'C376A469E8668097F10078BB1A8220EA';
 const appElement = document.querySelector('.app');
 var gamePossibilities = [];
 var mainUserGames = [];
+var recentUsersArray = [];
 var friendsListArray = [];
 var gameMatches = []
 const defaultGameImage = "../../images/default.jpg";
@@ -30,6 +31,7 @@ function header() {
 function enterSteamID() {
     appElement.innerHTML = EnterSteamID();
     saveSteamID();
+    getRecentUsers();
 }
 
 function reenterSteamID() {
@@ -60,7 +62,81 @@ function saveSteamID() {
     saveIDButton.addEventListener('click', function() {
         mainUserSteamID = document.querySelector('.steam-id-input').value;
         console.log(mainUserSteamID)
+        addRecentUser();
         soloOrSocial();
+    })
+}
+
+function addRecentUser() {
+    const requestBody = {
+        SteamId: mainUserSteamID
+    }
+
+    fetch('https://localhost:44351/api/user', {
+        method:"POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestBody)
+    })
+        .then(response => response.json())
+        // .then(users => {
+            
+        // })
+        .catch(err => console.log(err))
+}
+
+function getRecentUsers() {
+    recentUsersArray.length = 0;
+    fetch('https://localhost:44351/api/user')
+    .then(response => response.json())
+    .then(users => {
+        users.forEach(user => {
+            recentUsersArray.push(user.steamId)
+            console.log(recentUsersArray)
+        })
+        displayRecentUsers();
+    })
+    .catch(err => console.log(err))
+}
+
+function displayRecentUsers() {
+    console.log(recentUsersArray)
+    const recentUsersCommas = recentUsersArray.join(",")
+    console.log(recentUsersCommas)
+    const recentUsersMainDiv = document.querySelector('.recent-users')
+    fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${recentUsersCommas}`)
+    .then(response => response.json())
+    .then(results => {
+        results.response.players.forEach(element => {
+            console.log(element.steamid)
+            const recentUserDiv = document.createElement("DIV")
+            recentUserDiv.setAttribute("class", "recent-user-div")
+            recentUserDiv.setAttribute("id", element.steamid)
+            const recentUserElement = document.createElement("P")
+            recentUserElement.setAttribute("class", "recent-user-name")
+            const recentUserName = element.personaname
+            recentUserElement.innerHTML = recentUserName
+            const recentUserAvatarElement = document.createElement("IMG")
+            recentUserAvatarElement.setAttribute("class", "recent-user-avatar")
+            recentUserAvatarElement.setAttribute("src", element.avatarmedium)
+            recentUserDiv.appendChild(recentUserAvatarElement)
+            recentUserDiv.appendChild(recentUserElement)
+            recentUsersMainDiv.appendChild(recentUserDiv)
+        })
+        recentUserSignIn()
+    })
+    .catch(err => console.log(err))
+}
+
+function recentUserSignIn() {
+    const recentUserDiv = document.querySelectorAll('.recent-user-div')
+    recentUserDiv.forEach(element => {
+        element.addEventListener('click', function() {
+        console.log(element.id)
+        mainUserSteamID = element.id
+        soloOrSocial();
+        })
     })
 }
 

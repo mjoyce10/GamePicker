@@ -142,3 +142,13 @@ button {
 .shuffle-matches-btn {
   margin: 2rem;
 }
+
+.welcome-header {
+  color: rgb(43, 216, 43);
+}
+
+.user-avatar {
+  border-style: solid;
+  border-color: blue;
+  margin-bottom: 0.5rem;
+}

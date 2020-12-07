@@ -28,6 +28,17 @@ h2 {
   color: orange;
 }
 
+.images-and-input {
+  display: flex;
+  width: 75%;
+  margin: auto;
+}
+
+.fruit {
+  width: 15rem;
+  height: auto;
+}
+
 .steam-id-container {
   border-style: dotted;
   border-color: rgb(233, 124, 124);

@@ -40,12 +40,55 @@ h2 {
 }
 
 .inner-steam-id-container {
-  /* margin-top: 10%;*/
-  padding-top: 6.5%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 0.5rem;
+}
+
+.steam-id-input {
+  height: 1rem;
+  width: 23rem;
+}
+
+.steam-id-button {
+  height: 5rem;
+  width: auto;
+}
+
+.steam-id-button:hover {
+  cursor: pointer;
+}
+
+.steam-id-button:active {
+  transform: translateY(3px);
 }
 
 .enter-steam-id-title {
   color: orange;
+}
+
+.recent-users-heading {
+  padding-top: 5rem;
+  color: rgb(43, 216, 43);
+}
+
+.recent-user-div {
+  display: flex;
+  align-items: center;
+  width: 25rem;
+  margin: 1rem auto;
+  padding: 0.5rem;
+  background-color: gray;
+  border: solid red;
+}
+
+.recent-user-div:hover {
+  border: solid rgb(43, 216, 43);
+}
+
+.recent-user-name {
+  margin-left: 2rem;
 }
 
 .games,

@@ -4,9 +4,10 @@ export default function EnterSteamID() {
     <div class="steam-id-container">
         <div class="inner-steam-id-container">
             <input class="steam-id-input" placeholder="Steam ID" type="text"/>
-            <button class="steam-id-button">Submit</button>
+            <img class="steam-id-button" src="../../../images/quarter_slot.jpg"/>
         </div>
     </div>
+    <h2 class="recent-users-heading">Recent Players</h2>
     <div class="recent-users"></div>
     `
 }

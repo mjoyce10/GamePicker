@@ -277,13 +277,13 @@ function shuffleGames(array, steamID){
     const gameLogo = array[arrayPosition].img_logo_url
     const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${array[arrayPosition].appid}/${gameLogo}.jpg`
     setDefaultImage(gameImage, imgURL, gameLogo)
-    statsDisplay(array, arrayPosition);
+    statsDisplay(array, arrayPosition, steamID);
     if (steamID !== mainUserSteamID) {
-        statsDisplay(gameMatchesSecondPlayer, arrayPosition)
+        statsDisplay(gameMatchesSecondPlayer, arrayPosition, steamID)
     }
 }
 
-function statsDisplay(array, arrayPosition) {
+function statsDisplay(array, arrayPosition, steamID) {
     const statsContainer = document.querySelector('.stats-container')
     let playtimeTwoWeeks = (array[arrayPosition].playtime_2weeks/60).toFixed(2);
     let playtimeForever = (array[arrayPosition].playtime_forever/60).toFixed(2);
@@ -291,9 +291,12 @@ function statsDisplay(array, arrayPosition) {
     if (isNaN(playtimeTwoWeeks)) {
         playtimeTwoWeeks = 0.00.toFixed(2);
     }
+    if (statsContainer.childElementCount === 1) {
+        steamID = mainUserSteamID
+    }
     const playerStats = document.createElement('DIV')
     playerStats.setAttribute("class", "stats")
-    if (array === gameMatchesSecondPlayer) {
+    if (steamID === mainUserSteamID) {
         playerStats.innerHTML = MainUserStats(playtimeTwoWeeks, playtimeForever)
     }
     else {

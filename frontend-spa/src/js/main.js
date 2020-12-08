@@ -5,7 +5,8 @@ import GamesOwned from './components/GamesOwned';
 import ShuffleResult from './components/ShuffleResult';
 import SoloOrSocial from './components/SoloOrSocial';
 import CompareGames from './components/CompareGames';
-import Stats from './components/Stats';
+import MainUserStats from './components/MainUserStats';
+import FriendStats from './components/FriendStats';
 
 export default () => {
     header();
@@ -263,12 +264,12 @@ function getGamesOwned(steamID) {
             noGamesDiv.appendChild(noGamesImage)
         }
         gamePossibilities = results.response.games;
-        shuffleButton(gamePossibilities)
+        shuffleButton(gamePossibilities, steamID)
     })
     .catch(err => console.log(err))
 }
 
-function shuffleGames(array){
+function shuffleGames(array, steamID){
     const shuffleResultElement = document.querySelector('.game-choice')
     let arrayPosition = Math.floor(Math.random()* array.length);
     shuffleResultElement.innerText = `${array[arrayPosition].name}`
@@ -277,21 +278,32 @@ function shuffleGames(array){
     const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${array[arrayPosition].appid}/${gameLogo}.jpg`
     setDefaultImage(gameImage, imgURL, gameLogo)
     statsDisplay(array, arrayPosition);
+    if (steamID !== mainUserSteamID) {
+        statsDisplay(gameMatchesSecondPlayer, arrayPosition)
+    }
 }
 
 function statsDisplay(array, arrayPosition) {
     const statsContainer = document.querySelector('.stats-container')
     let playtimeTwoWeeks = (array[arrayPosition].playtime_2weeks/60).toFixed(2);
     let playtimeForever = (array[arrayPosition].playtime_forever/60).toFixed(2);
+    console.log(playtimeForever)
     if (isNaN(playtimeTwoWeeks)) {
         playtimeTwoWeeks = 0.00.toFixed(2);
     }
-    let playerStats = Stats();
-    statsContainer.innerHTML = playerStats;
-    const foreverPlaytimeElement = document.querySelector('.forever-playtime')
-    const twoWeeksPlaytimeElement = document.querySelector('.two-week-playtime')
-    ifNoForeverPlaytime(foreverPlaytimeElement, playtimeForever)
-    ifNoTwoWeeksPlaytime(twoWeeksPlaytimeElement, playtimeTwoWeeks)
+    const playerStats = document.createElement('DIV')
+    playerStats.setAttribute("class", "stats")
+    if (array === gameMatchesSecondPlayer) {
+        playerStats.innerHTML = MainUserStats(playtimeTwoWeeks, playtimeForever)
+    }
+    else {
+        playerStats.innerHTML = FriendStats(playtimeTwoWeeks, playtimeForever)
+    }
+    statsContainer.appendChild(playerStats)
+    // const foreverPlaytimeElement = document.querySelector('.forever-playtime')
+    // const twoWeeksPlaytimeElement = document.querySelector('.two-week-playtime')
+    // ifNoForeverPlaytime(foreverPlaytimeElement, playtimeForever)
+    // ifNoTwoWeeksPlaytime(twoWeeksPlaytimeElement, playtimeTwoWeeks)
 }
 
 function ifNoForeverPlaytime(playTimeElement, playTime){
@@ -312,14 +324,14 @@ function ifNoTwoWeeksPlaytime(playTimeElement, playTime) {
     }
 }
 
-function shuffleButton(array) {
+function shuffleButton(array, steamID) {
     const shuffleButtonElement = document.querySelector('.shuffle-btn')
     shuffleButtonElement.addEventListener("click", function(){
         console.log("shuffleButton")
         console.log(array)
     appElement.innerHTML = ShuffleResult()
-    shuffleGames(array)
-    shuffleButton(array)
+    shuffleGames(array, steamID)
+    shuffleButton(array, steamID)
     })
 }
 

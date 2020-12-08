@@ -5,6 +5,7 @@ import GamesOwned from './components/GamesOwned';
 import ShuffleResult from './components/ShuffleResult';
 import SoloOrSocial from './components/SoloOrSocial';
 import CompareGames from './components/CompareGames';
+import Stats from './components/Stats';
 
 export default () => {
     header();
@@ -18,6 +19,7 @@ var mainUserGames = [];
 var recentUsersArray = [];
 var friendsListArray = [];
 var gameMatches = []
+var gameMatchesSecondPlayer = [];
 const defaultGameImage = "../../images/default.jpg";
 let mainUserSteamID = "";
 let returnToFriendsListElement = "";
@@ -80,9 +82,6 @@ function addRecentUser() {
         body: JSON.stringify(requestBody)
     })
         .then(response => response.json())
-        // .then(users => {
-            
-        // })
         .catch(err => console.log(err))
 }
 
@@ -215,6 +214,7 @@ function getFriendsListNames() {
             friendsListDiv.appendChild(friendsAvatarElement)
             friendsListDiv.appendChild(friendsListElement)
             friendsDiv.appendChild(friendsListDiv)
+            console.log(friendsListDiv)
         })
         getFriendsGames();
     })
@@ -270,23 +270,45 @@ function getGamesOwned(steamID) {
 
 function shuffleGames(array){
     const shuffleResultElement = document.querySelector('.game-choice')
-    const playTimeElement = document.querySelector('.play-time')
     let arrayPosition = Math.floor(Math.random()* array.length);
     shuffleResultElement.innerText = `${array[arrayPosition].name}`
-    let playTime = (array[arrayPosition].playtime_forever/60).toFixed(2);
-    playTimeDisplay(playTimeElement, playTime);
     const gameImage = document.querySelector('.game-choice-image')
     const gameLogo = array[arrayPosition].img_logo_url
     const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${array[arrayPosition].appid}/${gameLogo}.jpg`
     setDefaultImage(gameImage, imgURL, gameLogo)
+    statsDisplay(array, arrayPosition);
 }
 
-function playTimeDisplay(playTimeElement, playTime){
+function statsDisplay(array, arrayPosition) {
+    const statsContainer = document.querySelector('.stats-container')
+    let playtimeTwoWeeks = (array[arrayPosition].playtime_2weeks/60).toFixed(2);
+    let playtimeForever = (array[arrayPosition].playtime_forever/60).toFixed(2);
+    if (isNaN(playtimeTwoWeeks)) {
+        playtimeTwoWeeks = 0.00.toFixed(2);
+    }
+    let playerStats = Stats();
+    statsContainer.innerHTML = playerStats;
+    const foreverPlaytimeElement = document.querySelector('.forever-playtime')
+    const twoWeeksPlaytimeElement = document.querySelector('.two-week-playtime')
+    ifNoForeverPlaytime(foreverPlaytimeElement, playtimeForever)
+    ifNoTwoWeeksPlaytime(twoWeeksPlaytimeElement, playtimeTwoWeeks)
+}
+
+function ifNoForeverPlaytime(playTimeElement, playTime){
     if(playTime > 0){
-        playTimeElement.innerText = `You have played this game for ${playTime} hours.`
+        playTimeElement.innerText = `You have played this game for a total of ${playTime} hours.`
     }
     else {
         playTimeElement.innerText = "You have never played this game."
+    }
+}
+
+function ifNoTwoWeeksPlaytime(playTimeElement, playTime) {
+    if(playTime > 0){
+        playTimeElement.innerText = `In the past two weeks, you have played this game for ${playTime} hours.`
+    }
+    else {
+        playTimeElement.innerText = "You haven't played this game in the past two weeks."
     }
 }
 
@@ -421,6 +443,7 @@ function getMatches() {
         for (let x=0; x < mainUserGames.length; x++) {
             if (gamePossibilities[i].appid === mainUserGames[x].appid) {
                 gameMatches.push(gamePossibilities[i])
+                gameMatchesSecondPlayer.push(mainUserGames[x])
             }
         }
     }

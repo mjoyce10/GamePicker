@@ -223,3 +223,21 @@ button {
   border-color: blue;
   margin-bottom: 0.5rem;
 }
+
+.stats-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: row-reverse;
+}
+
+.stats {
+  background-color: rgb(126, 126, 126);
+  border: solid blue;
+  margin: 2rem;
+  width: 35%;
+  padding: 1rem;
+}
+
+.stats > h3 {
+  color: orange;
+}

@@ -420,6 +420,8 @@ function compareGames() {
 }
 
 function getMatches() {
+    gameMatches.length = 0;
+    gameMatchesSecondPlayer.length = 0;
         for (let i=0; i < gamePossibilities.length; i++) {
         for (let x=0; x < mainUserGames.length; x++) {
             if (gamePossibilities[i].appid === mainUserGames[x].appid) {

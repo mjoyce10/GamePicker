@@ -285,3 +285,8 @@ button {
 button:hover {
   border: solid rgb(43, 216, 43);
 }
+
+.recent-user-avatar {
+  width: 4rem;
+  height: auto;
+}

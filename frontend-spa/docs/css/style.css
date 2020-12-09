@@ -112,6 +112,7 @@ h2 {
 
 .recent-user-div:hover {
   border: solid rgb(43, 216, 43);
+  cursor: pointer;
 }
 
 .recent-user-name {
@@ -137,6 +138,7 @@ h2 {
 .game-match {
   background-color: gray;
   padding-bottom: 0.5rem;
+  padding-top: 5%;
   border-style: solid;
   border-color: rgb(43, 216, 43);
 }
@@ -218,7 +220,7 @@ button {
 }
 
 .shuffle-matches-btn {
-  margin: 2rem;
+  margin: 0.5rem;
 }
 
 .welcome-header {
@@ -273,4 +275,13 @@ button {
 button {
   background-color: rgb(126, 126, 126);
   border: solid blue;
+}
+
+.player-stats-heading {
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+}
+
+button:hover {
+  border: solid rgb(43, 216, 43);
 }

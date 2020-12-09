@@ -261,10 +261,10 @@ button {
 }
 
 .game-choice-image {
-  width: 276px;
-  height: 103px;
-  margin-left: 39.5%;
-  margin-bottom: 2%;
+  width: 17.25rem;
+  height: 6.4375rem;
+  margin: auto;
+  margin-bottom: 1rem;
 }
 
 .shuffle-container {

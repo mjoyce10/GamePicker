@@ -121,7 +121,8 @@ function displayRecentUsers() {
             recentUserElement.innerHTML = recentUserName
             const recentUserAvatarElement = document.createElement("IMG")
             recentUserAvatarElement.setAttribute("class", "recent-user-avatar")
-            recentUserAvatarElement.setAttribute("src", element.avatarmedium)
+            userAvatar = element.avatarmedium
+            setDefaultAvatar(recentUserAvatarElement, "medium")
             recentUserDiv.appendChild(recentUserAvatarElement)
             recentUserDiv.appendChild(recentUserElement)
             recentUsersMainDiv.appendChild(recentUserDiv)
@@ -166,15 +167,16 @@ function displayUserNickname() {
         const userName = result.response.players[0].personaname
         console.log(userName)
         userWelcomeElement.innerHTML = `Welcome, ${userName}`
-        setDefaultAvatar(userAvatarElement)
+        setDefaultAvatar(userAvatarElement, "full")
     })
 }
 
-function setDefaultAvatar(userAvatarElement){
-    if(userAvatar === 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg') {
+function setDefaultAvatar(userAvatarElement, size){
+    if(userAvatar === `https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_${size}.jpg`) {
         userAvatarElement.setAttribute("src", '../../images/default-avatar.png')
     }
     else {
+        console.log("testing")
         userAvatarElement.setAttribute("src", userAvatar)
     }
 }
@@ -217,7 +219,8 @@ function getFriendsListNames() {
             friendsListElement.innerHTML = friendsSteamName
             const friendsAvatarElement = document.createElement("IMG")
             friendsAvatarElement.setAttribute("class", "friend-avatar")
-            friendsAvatarElement.setAttribute("src", element.avatarmedium)
+            userAvatar = element.avatarmedium
+            setDefaultAvatar(friendsAvatarElement, "medium")
             friendsListDiv.appendChild(friendsAvatarElement)
             friendsListDiv.appendChild(friendsListElement)
             friendsDiv.appendChild(friendsListDiv)
@@ -261,7 +264,6 @@ function getGamesOwned(steamID) {
     }
         else {
             const compareGamesDiv = document.querySelector('.buttons')
-            const compareGamesButton = document.querySelector('.compare-games-element')
             const button = document.querySelector('.remove-btn')
             const noGamesImage = document.createElement("IMG")
             noGamesImage.setAttribute("class", "no-games-image")

@@ -257,3 +257,20 @@ button {
 .stats > h3 {
   color: orange;
 }
+
+.game-choice-image {
+  width: 276px;
+  height: 103px;
+  margin-left: 39.5%;
+  margin-bottom: 2%;
+}
+
+.shuffle-container {
+  display: grid;
+  grid-template-rows: auto auto;
+}
+
+button {
+  background-color: rgb(126, 126, 126);
+  border: solid blue;
+}

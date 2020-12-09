@@ -66,7 +66,6 @@ function saveSteamID() {
     const saveIDButton = document.querySelector('.steam-id-button')
     saveIDButton.addEventListener('click', function() {
         mainUserSteamID = document.querySelector('.steam-id-input').value;
-        console.log(mainUserSteamID)
         addRecentUser();
         soloOrSocial();
     })
@@ -95,7 +94,6 @@ function getRecentUsers() {
     .then(users => {
         users.forEach(user => {
             recentUsersArray.push(user.steamId)
-            console.log(recentUsersArray)
         })
         displayRecentUsers();
     })
@@ -103,15 +101,12 @@ function getRecentUsers() {
 }
 
 function displayRecentUsers() {
-    console.log(recentUsersArray)
     const recentUsersCommas = recentUsersArray.join(",")
-    console.log(recentUsersCommas)
     const recentUsersMainDiv = document.querySelector('.recent-users')
     fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${recentUsersCommas}`)
     .then(response => response.json())
     .then(results => {
         results.response.players.forEach(element => {
-            console.log(element.steamid)
             const recentUserDiv = document.createElement("DIV")
             recentUserDiv.setAttribute("class", "recent-user-div")
             recentUserDiv.setAttribute("id", element.steamid)
@@ -136,7 +131,6 @@ function recentUserSignIn() {
     const recentUserDiv = document.querySelectorAll('.recent-user-div')
     recentUserDiv.forEach(element => {
         element.addEventListener('click', function() {
-        console.log(element.id)
         mainUserSteamID = element.id
         soloOrSocial();
         })
@@ -165,7 +159,6 @@ function displayUserNickname() {
         const userAvatarElement = document.querySelector('.user-avatar')
         userAvatar = result.response.players[0].avatarfull
         const userName = result.response.players[0].personaname
-        console.log(userName)
         userWelcomeElement.innerHTML = `Welcome, ${userName}`
         setDefaultAvatar(userAvatarElement, "full")
     })
@@ -176,7 +169,6 @@ function setDefaultAvatar(userAvatarElement, size){
         userAvatarElement.setAttribute("src", '../../images/default-avatar.png')
     }
     else {
-        console.log("testing")
         userAvatarElement.setAttribute("src", userAvatar)
     }
 }
@@ -186,7 +178,6 @@ function getFriendsList(steamID) {
     .then(response => response.json())
     .then(results => {
         friendsListArray.length = 0;
-        console.log(results.friendslist.friends[0].steamid)
         appElement.innerHTML = FriendsListResults()
         deleteReturnToFriendsListButton()
         results.friendslist.friends.forEach(element => {
@@ -196,23 +187,18 @@ function getFriendsList(steamID) {
         getFriendsListNames();
     })
     .catch(err => console.log(err))
-    console.log(friendsListArray)
 }
 
 function getFriendsListNames() {
-    console.log(friendsListArray)
     const friendsListCommas = friendsListArray.join(",")
-    console.log(friendsListCommas)
     const friendsDiv = document.querySelector('.friends-div')
     fetch(`http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${steamAPIKey}&steamids=${friendsListCommas}`)
     .then(response => response.json())
     .then(results => {
         results.response.players.forEach(element => {
-            console.log(element.steamid)
             const friendsListDiv = document.createElement("DIV")
             friendsListDiv.setAttribute("class", "friend-div")
             friendsListDiv.setAttribute("id", element.steamid)
-            console.log(friendsListDiv.id)
             const friendsListElement = document.createElement("P")
             friendsListElement.setAttribute("class", "friend-name")
             const friendsSteamName = element.personaname
@@ -224,7 +210,6 @@ function getFriendsListNames() {
             friendsListDiv.appendChild(friendsAvatarElement)
             friendsListDiv.appendChild(friendsListElement)
             friendsDiv.appendChild(friendsListDiv)
-            console.log(friendsListDiv)
         })
         getFriendsGames();
     })
@@ -232,11 +217,9 @@ function getFriendsListNames() {
 }
 
 function getGamesOwned(steamID) {
-    console.log(steamID);
     fetch(`http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=${steamAPIKey}&steamid=${steamID}&format=json&include_appinfo=1&include_played_free_games=1`)
     .then(response => response.json())
     .then(results => {
-        console.log(results)
         appElement.innerHTML = GamesOwned()
         gamesOwnedHeaderPersonalization(steamID)
         addReturnToFriendsListButton(steamID)
@@ -296,7 +279,6 @@ function statsDisplay(array, arrayPosition, steamID) {
     const statsContainer = document.querySelector('.stats-container')
     let playtimeTwoWeeks = (array[arrayPosition].playtime_2weeks/60).toFixed(2);
     let playtimeForever = (array[arrayPosition].playtime_forever/60).toFixed(2);
-    console.log(playtimeForever)
     if (isNaN(playtimeTwoWeeks)) {
         playtimeTwoWeeks = 0.00.toFixed(2);
     }
@@ -317,8 +299,6 @@ function statsDisplay(array, arrayPosition, steamID) {
 function shuffleButton(array, steamID) {
     const shuffleButtonElement = document.querySelector('.shuffle-btn')
     shuffleButtonElement.addEventListener("click", function(){
-        console.log("shuffleButton")
-        console.log(array)
     appElement.innerHTML = ShuffleResult()
     shuffleGames(array, steamID)
     shuffleButton(array, steamID)
@@ -338,7 +318,6 @@ function getFriendsGames() {
     const friendDiv = document.querySelectorAll('.friend-div')
     friendDiv.forEach(element => {
         element.addEventListener('click', function() {
-        console.log(element.id)
         getGamesOwned(element.id)
         })
     })
@@ -407,7 +386,6 @@ function compareGames() {
     .then(response => response.json())
     .then(results => {
         mainUserGames = results.response.games
-        console.log(mainUserGames)
         gameMatches.length = 0;
         getMatches()
         if(gameMatches.length !== 0) {
@@ -421,7 +399,6 @@ function compareGames() {
             gameMatchLogo.setAttribute("class", "game-match-logo")
             const gameLogo = game.img_logo_url
             const imgURL = `http://media.steampowered.com/steamcommunity/public/images/apps/${game.appid}/${gameLogo}.jpg`
-            console.log(imgURL)
             gameMatchLogo.setAttribute("src", imgURL)
             const allGameMatchesDiv = document.querySelector('.game-matches')
             gameMatchesDiv.appendChild(gameMatchElement)
@@ -451,5 +428,4 @@ function getMatches() {
             }
         }
     }
-    console.log(gameMatches)
 }

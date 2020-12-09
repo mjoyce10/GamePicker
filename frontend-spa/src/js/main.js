@@ -23,7 +23,9 @@ var gameMatches = []
 var gameMatchesSecondPlayer = [];
 const defaultGameImage = "../../images/default.jpg";
 let mainUserSteamID = "";
+let friendName = "";
 let returnToFriendsListElement = "";
+let userAvatar = "";
 
 function header() {
     const headerElement = document.querySelector('.header');
@@ -160,17 +162,21 @@ function displayUserNickname() {
     .then(result => {
         const userWelcomeElement = document.querySelector('.welcome-header')
         const userAvatarElement = document.querySelector('.user-avatar')
-        const userAvatar = result.response.players[0].avatarfull
+        userAvatar = result.response.players[0].avatarfull
         const userName = result.response.players[0].personaname
         console.log(userName)
         userWelcomeElement.innerHTML = `Welcome, ${userName}`
-        if(userAvatar === 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg') {
-            userAvatarElement.setAttribute("src", '../../images/default-avatar.png')
-        }
-        else {
-            userAvatarElement.setAttribute("src", userAvatar)
-        }
+        setDefaultAvatar(userAvatarElement)
     })
+}
+
+function setDefaultAvatar(userAvatarElement){
+    if(userAvatar === 'https://steamcdn-a.akamaihd.net/steamcommunity/public/images/avatars/fe/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg') {
+        userAvatarElement.setAttribute("src", '../../images/default-avatar.png')
+    }
+    else {
+        userAvatarElement.setAttribute("src", userAvatar)
+    }
 }
 
 function getFriendsList(steamID) {
@@ -256,12 +262,13 @@ function getGamesOwned(steamID) {
         else {
             const compareGamesDiv = document.querySelector('.buttons')
             const compareGamesButton = document.querySelector('.compare-games-element')
-            compareGamesDiv.removeChild(compareGamesButton)
+            const button = document.querySelector('.remove-btn')
             const noGamesImage = document.createElement("IMG")
             noGamesImage.setAttribute("class", "no-games-image")
             noGamesImage.setAttribute("src", "../../images/no-games.png")
             const noGamesDiv = document.querySelector('.no-games-div')
             noGamesDiv.appendChild(noGamesImage)
+            compareGamesDiv.removeChild(button)
         }
         gamePossibilities = results.response.games;
         shuffleButton(gamePossibilities, steamID)
@@ -300,31 +307,9 @@ function statsDisplay(array, arrayPosition, steamID) {
         playerStats.innerHTML = MainUserStats(playtimeTwoWeeks, playtimeForever)
     }
     else {
-        playerStats.innerHTML = FriendStats(playtimeTwoWeeks, playtimeForever)
+        playerStats.innerHTML = FriendStats(friendName, playtimeTwoWeeks, playtimeForever)
     }
     statsContainer.appendChild(playerStats)
-    // const foreverPlaytimeElement = document.querySelector('.forever-playtime')
-    // const twoWeeksPlaytimeElement = document.querySelector('.two-week-playtime')
-    // ifNoForeverPlaytime(foreverPlaytimeElement, playtimeForever)
-    // ifNoTwoWeeksPlaytime(twoWeeksPlaytimeElement, playtimeTwoWeeks)
-}
-
-function ifNoForeverPlaytime(playTimeElement, playTime){
-    if(playTime > 0){
-        playTimeElement.innerText = `You have played this game for a total of ${playTime} hours.`
-    }
-    else {
-        playTimeElement.innerText = "You have never played this game."
-    }
-}
-
-function ifNoTwoWeeksPlaytime(playTimeElement, playTime) {
-    if(playTime > 0){
-        playTimeElement.innerText = `In the past two weeks, you have played this game for ${playTime} hours.`
-    }
-    else {
-        playTimeElement.innerText = "You haven't played this game in the past two weeks."
-    }
 }
 
 function shuffleButton(array, steamID) {
@@ -362,7 +347,8 @@ function gamesOwnedHeaderPersonalization(steamID) {
         .then(response => response.json())
         .then(results => {
             const gamesOwnedHeader = document.querySelector('.games-owned-header')
-            gamesOwnedHeader.innerHTML = `List of Games Owned by ${results.response.players[0].personaname}`
+            friendName = results.response.players[0].personaname
+            gamesOwnedHeader.innerHTML = `List of Games Owned by ${friendName}`
         })
 }
 
@@ -397,6 +383,7 @@ function addCompareGamesButton(steamID) {
         const compareGamesElement = document.createElement("BUTTON")
         compareGamesElement.innerText = "Compare Games"
         compareGamesElement.setAttribute("class", "compare-games-element")
+        compareGamesElement.setAttribute("class", "remove-btn")
         const shuffleButton = document.querySelector('.shuffle-btn')
         const buttonsDiv = document.querySelector('.buttons')
         buttonsDiv.appendChild(compareGamesElement)

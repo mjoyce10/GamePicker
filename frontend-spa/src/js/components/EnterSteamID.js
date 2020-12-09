@@ -1,8 +1,8 @@
 export default function EnterSteamID() {
     return `
     <h2 class="enter-steam-id-title">Enter your Steam ID</h2>
-    <div class="images-and-input">
-        <div class="fruits">
+    <div class="fruit-and-text">
+        <div class="fruits enter-page-fruits">
             <img class="cherry fruit" src="../../../images/cherry.png"/>
             <img class="peach fruit" src="../../../images/peach.png"/>
             <img class="strawberry fruit" src="../../../images/strawberry.png"/>
@@ -17,7 +17,7 @@ export default function EnterSteamID() {
         <h2 class="recent-users-heading">Recent Players</h2>
         <div class="recent-users"></div>
     </div>
-    <div class="fruits">
+    <div class="fruits enter-page-fruits">
         <img class="cherry fruit" src="../../../images/cherry.png"/>
         <img class="peach fruit" src="../../../images/peach.png"/>
         <img class="strawberry fruit" src="../../../images/strawberry.png"/>

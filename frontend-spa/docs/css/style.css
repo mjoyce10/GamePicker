@@ -28,7 +28,7 @@ h2 {
   color: orange;
 }
 
-.images-and-input {
+.fruit-and-text {
   display: flex;
   justify-content: center;
   width: 75%;
@@ -44,6 +44,9 @@ h2 {
 .fruits {
   display: flex;
   flex-direction: column;
+}
+
+.enter-page-fruits {
   margin: 0 12.5rem;
 }
 
@@ -113,6 +116,10 @@ h2 {
 
 .recent-user-name {
   margin-left: 2rem;
+}
+
+.welcome-and-options {
+  width: 65%;
 }
 
 .games,
@@ -188,7 +195,7 @@ button {
 .social,
 .re-enter {
   width: fit-content;
-  margin: auto;
+  margin: 2rem auto;
   padding: 1rem;
 }
 
@@ -221,7 +228,16 @@ button {
 .user-avatar {
   border-style: solid;
   border-color: blue;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.note {
+  background-color: gray;
+  border: solid red;
+  padding: 0.5rem;
+  color: black;
+  width: 90%;
+  margin: 1rem auto;
 }
 
 .stats-container {
